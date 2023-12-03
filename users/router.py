@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from config import LibrarySettings
+from config import get_settings
 from database import get_db
 from users import crud as users_crud
 from users import utils as users_utils
@@ -14,6 +14,8 @@ from users import schemas as users_schemas
 router = APIRouter(
     tags=['users']
 )
+
+settings = get_settings()
 
 
 @router.post('/create-user', response_model=users_schemas.UserBase)
@@ -41,7 +43,7 @@ def login_for_access_token(
             detail='Incorrect username or password.',
             headers={'WWW-Authenticate': 'Bearer'}
         )
-    access_token_expires = timedelta(minutes=LibrarySettings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = users_utils.create_access_token(
         data={'sub': user.username}, expire_delta=access_token_expires
     )
