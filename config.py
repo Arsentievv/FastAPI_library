@@ -41,9 +41,9 @@ class LibraryBaseSettings(BaseSettings):
 
 
 class PGSettings(LibraryBaseSettings):
-    POSTGRES_DB: str = Field('Library', title='PG DB name')
-    POSTGRES_USER: str = Field('Library', title='PG DB user')
-    POSTGRES_PASSWORD: str = Field('Library', title='PG DB password')
+    POSTGRES_DB: str = Field('library', title='PG DB name')
+    POSTGRES_USER: str = Field('postgres', title='PG DB user')
+    POSTGRES_PASSWORD: str = Field('postgres', title='PG DB password')
     POSTGRES_HOST: str = Field('localhost', title='PG DB host')
     POSTGRES_PORT: str = Field('5432', title='PG DB port')
     # POSTGRES_DRIVER: str = 'postgresql+asyncpg'
@@ -65,4 +65,5 @@ class LibrarySettings(LibraryBaseSettings):
 
 
 def get_settings(db_only=False) -> Union[PGSettings, LibrarySettings]:
-    return PGSettings if db_only else LibrarySettings()
+    return PGSettings() if db_only else LibrarySettings()
+
