@@ -1,7 +1,8 @@
 from passlib.context import CryptContext
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from library import models
 from library import schemas
+from fastapi import HTTPException, status
 
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated="auto")
@@ -33,9 +34,6 @@ def get_book(db: Session, book_id: int):
 
 
 def get_all_books(db: Session):
-    a = db.query(models.Book).all()
-    for book in a:
-        print(book.title, book.author_id)
     return db.query(models.Book).all()
 
 
@@ -56,3 +54,44 @@ def create_book(db: Session, book: schemas.BookCreate):
 
     return db_book
 
+
+def create_shop(db: Session, shop: schemas.ShopCreate):
+    db_shop = models.Shop(
+        title=shop.title,
+        address=shop.address,
+        url=shop.url
+    )
+    db.add(db_shop)
+    db.commit()
+    db.refresh(db_shop)
+
+    return db_shop
+
+
+def get_all_shops(db: Session):
+    return db.query(models.Shop).all()
+
+
+def get_shop(db: Session, shop_id: int):
+    return db.query(models.Shop).filter(models.Shop.id == shop_id).first()
+
+
+def get_shops_with_book(db: Session, book_id: int):
+    pass
+
+
+def add_book_in_shop(db: Session, book_id: int, shop_id: int):
+    exception = HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail='Invalid input data',
+    )
+    shop = db.query(models.Shop).get(shop_id)
+    if not shop:
+        raise exception
+    book = db.query(models.Book).get(book_id)
+    if not book:
+        raise exception
+    shop.books.append(book)
+    db.commit()
+    db.refresh(shop)
+    return shop

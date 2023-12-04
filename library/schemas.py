@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl
 from datetime import datetime
 
 
@@ -8,8 +8,29 @@ class BookBase(BaseModel):
     date_of_publish: datetime
 
 
+class ShopBase(BaseModel):
+    title: str
+    url: str
+    address: str | None = None
+
+
+class ShopCreate(ShopBase):
+    pass
+
+    class Config:
+        orm_mode = True
+
+
+class Shop(ShopBase):
+    id: int
+    books: list[BookBase]
+
+    class Config:
+        orm_mode = True
+
 class Book(BookBase):
     id: int
+    shops: list[Shop]
 
     class Config:
         orm_mode = True
@@ -34,4 +55,6 @@ class Author(AuthorBase):
 
     class Config:
         orm_mode = True
+
+
 

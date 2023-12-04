@@ -1,23 +1,3 @@
-# from fastapi.security import OAuth2PasswordBearer
-# from dotenv import load_dotenv
-# import os
-#
-# load_dotenv()
-#
-# DB_HOST = os.environ.get('DB_HOST')
-# DB_PORT = os.environ.get('DB_PORT')
-# DB_NAME = os.environ.get('DB_NAME')
-# DB_USER = os.environ.get('DB_USER')
-# DB_PASS = os.environ.get('DB_PASS')
-#
-# SECRET_KEY = '09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7'
-# ALGORITHM = 'HS256'
-# ACCESS_TOKEN_EXPIRE_MINUTES = 30
-#
-#
-# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
 from pydantic_settings import BaseSettings
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import Field
@@ -61,7 +41,6 @@ class LibrarySettings(LibraryBaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     DEBUG: bool = Field(True)
     postgres: PGSettings = PGSettings()
-    # oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 def get_settings(db_only=False) -> Union[PGSettings, LibrarySettings]:

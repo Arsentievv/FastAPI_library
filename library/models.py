@@ -17,6 +17,14 @@ class Author(Base):
         return f'id: {self.id} last name: {self.last_name}'
 
 
+class BookShop(Base):
+    __tablename__ = 'books_shops'
+
+    id = Column(Integer, primary_key=True, index=True)
+    book_id = Column(Integer, ForeignKey('books.id'))
+    shop_id = Column(Integer, ForeignKey('shops.id'))
+
+
 class Book(Base):
     __tablename__ = 'books'
 
@@ -27,6 +35,21 @@ class Book(Base):
     author_id = Column(Integer, ForeignKey("authors.id"))
 
     owner = relationship("Author", back_populates="books")
+    shops = relationship("Shop", secondary="books_shops", back_populates="books")
+
+    def __repr__(self):
+        return f'id: {self.id} title: {self.title}'
+
+
+class Shop(Base):
+    __tablename__ = 'shops'
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(length=200), nullable=False, index=True)
+    address = Column(String(length=200), nullable=True)
+    url = Column(String(length=200), nullable=False)
+
+    books = relationship("Book", secondary="books_shops", back_populates="shops")
 
     def __repr__(self):
         return f'id: {self.id} title: {self.title}'
