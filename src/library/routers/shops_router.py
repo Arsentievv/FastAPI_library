@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from library import schemas
+from library import schemas, crud
 from config import oauth2_scheme
 from typing import Annotated, List
 from database import get_db
-from library import crud
+
 
 router = APIRouter(tags=['shops'])
 

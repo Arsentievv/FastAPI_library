@@ -16,7 +16,7 @@ class LibraryBaseSettings(BaseSettings):
 
     class ConfigDict:
         extra = 'allow'
-        env_file = '.env'
+        env_file = '../.env'
         case_sensitive = True
 
 

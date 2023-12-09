@@ -5,11 +5,8 @@ from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 
 from database import get_db
-from config import get_settings
-from config import oauth2_scheme
-from users import models
-from users import schemas
-from users.schemas import TokenData
+from config import get_settings, oauth2_scheme
+from users import models, schemas
 from users.utils import get_password_hash
 
 
@@ -50,7 +47,7 @@ async def get_current_user(
         username: str = payload.get('sub')
         if username is None:
             raise credentials_exception
-        token_data = TokenData(username=username)
+        token_data = schemas.TokenData(username=username)
     except JWTError:
         raise credentials_exception
     user = get_user(username=token_data.username, db=db)

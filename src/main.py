@@ -1,7 +1,7 @@
 from fastapi import FastAPI
+from database import engine, Base
 from users.router import router as users_router
 from library.routers import books_router, authors_router, shops_router
-from database import engine, Base
 
 Base.metadata.create_all(bind=engine)
 

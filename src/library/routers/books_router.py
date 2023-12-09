@@ -2,10 +2,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from database import get_db
-from library import schemas
+from library import schemas, crud
 from typing import Annotated
 
-from library import crud
 from config import oauth2_scheme
 
 router = APIRouter(tags=['books'])
