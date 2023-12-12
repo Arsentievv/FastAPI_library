@@ -11,7 +11,7 @@ router = APIRouter(tags=['books'])
 
 
 @router.post("/books", response_model=schemas.Book)
-def create_book(
+async def create_book(
         book: schemas.BookCreate,
         token: Annotated[str, Depends(oauth2_scheme)],
         db: Session = Depends(get_db)):
@@ -20,7 +20,7 @@ def create_book(
 
 
 @router.get("/all-books", response_model=list[schemas.BookBase])
-def get_all_books(
+async def get_all_books(
         token: Annotated[str, Depends(oauth2_scheme)],
         db: Session = Depends(get_db)
 ):
@@ -28,7 +28,7 @@ def get_all_books(
 
 
 @router.get("/get-book/{book_id}", response_model=schemas.BookBase)
-def get_book(
+async def get_book(
         book_id: int,
         token: Annotated[str, Depends(oauth2_scheme)],
         db: Session = Depends(get_db)

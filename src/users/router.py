@@ -19,7 +19,7 @@ settings = get_settings()
 
 
 @router.post('/create-user', response_model=users_schemas.UserBase)
-def create_user(user: users_schemas.UserCreate, db: Session = Depends(get_db)):
+async def create_user(user: users_schemas.UserCreate, db: Session = Depends(get_db)):
     return users_crud.create_user(db=db, user=user)
 
 
@@ -29,7 +29,7 @@ async def read_users_me(current_user: Annotated[users_schemas.User, Depends(user
 
 
 @router.post('/token', response_model=users_schemas.Token)
-def login_for_access_token(
+async def login_for_access_token(
         form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: Session = Depends(get_db)
 ):
     user = users_utils.authenticate_user(

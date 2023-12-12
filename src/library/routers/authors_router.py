@@ -12,7 +12,7 @@ router = APIRouter(tags=['author'])
 
 
 @router.get("/get-authors-books/{author_id)", response_model=list[schemas.BookBase])
-def get_authors_books(
+async def get_authors_books(
         author_id: int,
         token: Annotated[str, Depends(oauth2_scheme)],
         db: Session = Depends(get_db)
@@ -21,7 +21,7 @@ def get_authors_books(
 
 
 @router.get('/get-author/{author_id}', response_model=schemas.AuthorBase)
-def get_author(
+async def get_author(
         author_id: int,
         token: Annotated[str, Depends(oauth2_scheme)],
         db: Session = Depends(get_db)
@@ -30,7 +30,7 @@ def get_author(
 
 
 @router.get('/get-all-authors', response_model=list[schemas.AuthorBase])
-def get_all_authors(
+async def get_all_authors(
         token: Annotated[str, Depends(oauth2_scheme)],
         db: Session = Depends(get_db)
 ):
@@ -38,7 +38,7 @@ def get_all_authors(
 
 
 @router.post('/create-author', response_model=schemas.AuthorBase)
-def create_author(
+async def create_author(
         author: schemas.AuthorBase,
         token: Annotated[str, Depends(oauth2_scheme)],
         db: Session = Depends(get_db)

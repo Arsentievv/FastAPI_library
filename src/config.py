@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import Field
 from typing import Union
@@ -21,11 +21,11 @@ class LibraryBaseSettings(BaseSettings):
 
 
 class PGSettings(LibraryBaseSettings):
-    POSTGRES_DB: str = Field('library', title='PG DB name')
+    POSTGRES_DB: str = Field('library_test', title='PG DB name')
     POSTGRES_USER: str = Field('postgres', title='PG DB user')
     POSTGRES_PASSWORD: str = Field('postgres', title='PG DB password')
     POSTGRES_HOST: str = Field('localhost', title='PG DB host')
-    POSTGRES_PORT: str = Field('5432', title='PG DB port')
+    POSTGRES_PORT: int = Field(5432, title='PG DB port')
     # POSTGRES_DRIVER: str = 'postgresql+asyncpg'
     POSTGRES_DRIVER: str = 'postgresql'
 
@@ -33,6 +33,8 @@ class PGSettings(LibraryBaseSettings):
     def sqlalchemy_db_uri(self) -> str:
         return f"{self.POSTGRES_DRIVER}://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@" \
                f"{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+
+    model_config = SettingsConfigDict(env_file='.env')
 
 
 class LibrarySettings(LibraryBaseSettings):

@@ -11,7 +11,7 @@ router = APIRouter(tags=['shops'])
 
 
 @router.get('/shops/all', response_model=List[schemas.Shop])
-def get_all_shops(
+async def get_all_shops(
         token: Annotated[str, Depends(oauth2_scheme)],
         db: Annotated[Session, Depends(get_db)],
         shops: Annotated[List[schemas.Shop], crud.get_all_shops]
@@ -20,7 +20,7 @@ def get_all_shops(
 
 
 @router.post('/shops/create', response_model=schemas.Shop)
-def create_shop(
+async def create_shop(
         token: Annotated[str, Depends(oauth2_scheme)],
         db: Annotated[Session, Depends(get_db)],
         shop: schemas.ShopCreate
@@ -29,7 +29,7 @@ def create_shop(
 
 
 @router.get('/shops/books/{book_id}', response_model=schemas.ShopBase)
-def shops_with_book(
+async def shops_with_book(
         token: Annotated[str, Depends(oauth2_scheme)],
         db: Annotated[Session, Depends(get_db)],
         book_id: int
@@ -39,7 +39,7 @@ def shops_with_book(
 
 
 @router.post('/shops/add-book-to-shop/{book_id}/{shop_id}')
-def add_book_to_shop(
+async def add_book_to_shop(
         db: Annotated[Session, Depends(get_db)],
         book_id: int,
         shop_id: int

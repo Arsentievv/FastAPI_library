@@ -1,5 +1,6 @@
 from typing import Annotated
 
+import sqlalchemy
 from fastapi import Depends, status, HTTPException
 from jose import jwt, JWTError
 from sqlalchemy.orm import Session
@@ -54,3 +55,10 @@ async def get_current_user(
     if user is None:
         raise credentials_exception
     return user
+
+
+async def delete_all():
+    stmt = sqlalchemy.delete(models.User)
+    with Session() as session:
+        session.execute(stmt)
+        session.commit()
